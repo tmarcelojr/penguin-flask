@@ -81,6 +81,7 @@ def login():
         status=401
       ), 401
 
+# Check current user
 @penguins.route('/logged_in', methods=['GET'])
 def get_logged_in_user():
   if not current_user.is_authenticated:
@@ -98,3 +99,12 @@ def get_logged_in_user():
       status=200
     ), 200
 
+# Logout
+@penguins.route('/logout', methods=['GET'])
+def logout():
+  logout_user()
+  return jsonify(
+    data={},
+    message="Successfully logged out",
+    status=200
+  ), 200
