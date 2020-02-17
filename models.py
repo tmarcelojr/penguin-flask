@@ -21,7 +21,6 @@ class Penguin(UserMixin, Model):
 class Baby_Penguin(Model):
 	name = CharField(unique=True)
 	parent = ForeignKeyField(Penguin, backref='baby_penguins')
-	type_of_penguin = CharField()
 
 	class Meta:
 		database = DATABASE

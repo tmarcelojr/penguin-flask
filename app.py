@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, g
 from flask_login import LoginManager
 from resources.penguins import penguins
+from resources.baby_penguins import baby_penguins
 from models import Penguin, DoesNotExist, initialize, DATABASE
 DEBUG = True
 PORT = 8000
@@ -26,6 +27,9 @@ def load_user(userid):
 
 # Penguins
 app.register_blueprint(penguins, url_prefix='/api/v1/penguins')
+
+# Baby penguins
+app.register_blueprint(baby_penguins, url_prefix='/api/v1/baby_penguins')
 
 # ==============================
 # 			DATABASE CONNECTION
