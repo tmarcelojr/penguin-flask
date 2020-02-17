@@ -2,6 +2,7 @@
 from flask_login import UserMixin
 # * imports everything from peewee
 from peewee import *
+
 DATABASE = SqliteDatabase('penguins.sqlite')
 
 # ==============================
@@ -10,18 +11,16 @@ DATABASE = SqliteDatabase('penguins.sqlite')
 
 # Penguin
 class Penguin(UserMixin, Model):
-  username = CharField(unique=True)
-  password = CharField()
-  type_of_penguin = CharField()
+	username = CharField(unique=True)
+	password = CharField()
 
-  class Meta: 
-    database = DATABASE
+	class Meta:
+		database = DATABASE
 
 # Baby Penguin
 class Baby_Penguin(Model):
 	name = CharField(unique=True)
 	parent = ForeignKeyField(Penguin, backref='baby_penguins')
-	type_of_penguin = CharField()
 
 	class Meta:
 		database = DATABASE
