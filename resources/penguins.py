@@ -39,7 +39,7 @@ def register():
 				username=payload['username'],
 				password=generate_password_hash(payload['password'])
 			)
-
+		login_user(created_penguin)
 		penguin_dict = model_to_dict(created_penguin)
 		# Do not return password
 		penguin_dict.pop('password')
@@ -81,4 +81,20 @@ def login():
         status=401
       ), 401
 
+@users.route('/logged_in', methods=['GET'])
+def get_logged_in_user():
+  if not current_penguin.is_authenticated:
+    return jsonify(
+      data={},
+      message="No user is currently logged in",
+      status=401
+    ), 401
+  else:
+    penguin_dict = model_to_dict(current_penguin)
+    penguin_dict.pop('password')
+    return jsonify(
+      data=penguin_dict,
+      message=f"Current user is {penguin_dict['username']}", 
+      status=200
+    ), 200
 
