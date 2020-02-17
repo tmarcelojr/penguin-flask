@@ -1,6 +1,7 @@
 from models import Penguin, DoesNotExist
 from flask import Blueprint, request, jsonify
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
+from flask_login import login_user, current_user, logout_user
 from playhouse.shortcuts import model_to_dict
 
 # ==============================
@@ -44,10 +45,40 @@ def register():
 		penguin_dict.pop('password')
 		return jsonify(
 				data=penguin_dict,
-				message=f"Successfully registed {penguin_dict['username']}.",
+				message=f"Successfully registered {penguin_dict['username']}.",
 				status=201
 			), 201
 
-
+# Login
+@penguins.route('/login', methods=['POST'])
+def login():
+	payload = request.get_json()
+	payload['username'] = payload['username'].lower()
+	try:
+		penguin = Penguin.get(Penguin.username == payload['username'])
+		penguin_dict = model_to_dict(penguin)
+		password_is_good = check_password_hash(penguin_dict['password'], payload['password'])
+		if password_is_good:
+			login_user(penguin)
+			penguin_dict.pop('password')
+			return jsonify(
+					data=penguin_dict,
+	  			message=f"Successfully logged in as {penguin_dict['username']}",
+	  			status=200
+  			), 200
+		else:
+  		# This means password is not correct.
+			return jsonify(
+      	data={},
+        message="Username or password is incorrect",
+        status=401
+      	), 401
+	except DoesNotExist:
+	# Username not correct
+		return jsonify(
+        data={},
+        message="Username or password is incorrect",
+        status=401
+      ), 401
 
 
