@@ -1,8 +1,16 @@
 from flask import Flask
+from resources.penguins import penguins
 import models
 DEBUG = True
 PORT = 8000
 app = Flask(__name__)
+
+# ==============================
+# 			REGISTER BLUEPRINTS
+# ==============================
+
+# Penguins
+app.register_blueprint(penguins, url_prefix='/api/v1/penguins')
 
 # ==============================
 # 						ROUTES

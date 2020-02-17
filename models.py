@@ -29,7 +29,7 @@ class Baby_Penguin(Model):
 # Activity
 class Activity(Model):
 	name = CharField()
-	description = Charfield()
+	description = CharField()
 
 	class Meta:
 		database = DATABASE
