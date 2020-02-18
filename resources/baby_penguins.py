@@ -64,6 +64,29 @@ def delete_baby_penguin(id):
 				status=403
 			), 403
 
+# Update baby penguin
+@baby_penguins.route('/<id>', methods=['PUT'])
+@login_required
+def update_baby_penguin(id):
+	payload = request.get_json()
+	baby_penguin = Baby_Penguin.get_by_id(id)
+	if current_user.id == baby_penguin.parent.id:
+		baby_penguin.name = payload['name'] if 'name' in payload else None
+
+		# .save() allows updating properties
+		baby_penguin.save()
+		baby_penguin_dict = model_to_dict(baby_penguin)
+		return jsonify(
+				data=baby_penguin_dict,
+				message=f'Successfully updated baby penguin with id {baby_penguin.id}.',
+				status=200
+			), 200
+	else:
+		return jsonify(
+				data='Error: Forbidden',
+				message='Penguins can only update their own baby penguin.',
+				status=403
+			), 403
 
 
 
