@@ -3,7 +3,7 @@ from flask_login import UserMixin
 # * imports everything from peewee
 from peewee import *
 
-DATABASE = SqliteDatabase('penguins.sqlite')
+DATABASE = SqliteDatabase('baby_penguins.sqlite')
 
 # ==============================
 # 						MODELS
@@ -19,7 +19,7 @@ class Penguin(UserMixin, Model):
 
 # Baby Penguin
 class Baby_Penguin(Model):
-	name = CharField(unique=True)
+	name = CharField()
 	parent = ForeignKeyField(Penguin, backref='baby_penguins')
 
 	class Meta:
