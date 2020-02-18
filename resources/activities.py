@@ -17,7 +17,7 @@ activities = Blueprint('activities', 'activities')
 @activities.route('/', methods=['GET'])
 @login_required
 def activities_index():
-	activities_dicts = [model_to_dict(activities) for activity in current_user.activities]
+	activities_dicts = [model_to_dict(activity) for activity in current_user.activities]
 	return jsonify(
 			data=activities_dicts,
 			message=f'Successfully retrieved {len(activities_dicts)} activities.',

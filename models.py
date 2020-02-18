@@ -5,9 +5,14 @@ from peewee import *
 
 import datetime
 
+# ==============================
+# 				CREATE DATABASE
+# ==============================
+
 DATABASE = SqliteDatabase('baby_penguins.sqlite')
 DATABASE = SqliteDatabase('activities.sqlite')
 DATABASE = SqliteDatabase('scheduled_activities.sqlite')
+DATABASE = SqliteDatabase('participation.sqlite')
 
 # ==============================
 # 						MODELS
@@ -40,9 +45,10 @@ class Activity(Model):
 
 # Scheduled Activity
 class Scheduled_Activity(Model):
-	test = CharField()
-	created_at = DateTimeField(default=datetime.datetime.now)
-	scheduler = ForeignKeyField(Penguin, backref='scheduled_activities')
+	# change this to not created at but when it will happen 
+	# created_at = DateTimeField(default=datetime.datetime.now)
+	activity = ForeignKeyField(Activity, backref='scheduled_activities')
+	parent = ForeignKeyField(Penguin, backref='scheduled_activities')
 
 	class Meta:
 		database = DATABASE

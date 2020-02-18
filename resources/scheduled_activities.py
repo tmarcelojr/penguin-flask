@@ -25,20 +25,21 @@ def scheduled_activities_index():
 		), 200
 
 # Schedule activity
-@scheduled_activities.route('/', methods=['POST'])
+# specify which activity I'm setting in the params
+@scheduled_activities.route('/<activity_id>', methods=['POST'])
 @login_required
-def create_scheduled_activity():
-	payload = request.get_json()
+def create_scheduled_activity(activity_id):
+	payload = request.get_json() # activity ID could be here
 	scheduled_activity = Scheduled_Activity.create(
-			test=payload['test'],
-			scheduler=current_user.id
+			activity=activity_id,
+			parent=current_user.id
 		)
 	scheduled_activity_dict = model_to_dict(scheduled_activity)
-	scheduled_activity_dict['scheduler'].pop('password')
+	scheduled_activity_dict['parent'].pop('password')
 
 	return jsonify(
 			data=scheduled_activity_dict,
-			message=f"Successfully scheduled activity by {payload['scheduler']}.",
+			message=f"Successfully scheduled activity by {current_user.id}.",
 			status=201
 		), 201
 
@@ -47,11 +48,11 @@ def create_scheduled_activity():
 @login_required
 def delete_scheduled_activity(id):
 	scheduled_activity_to_delete = Scheduled_Activity.get_by_id(id)
-	if current_user.id == scheduled_activity_to_delete.scheduler.id:
+	if current_user.id == scheduled_activity_to_delete.parent.id:
 		scheduled_activity_to_delete.delete_instance()
 		return jsonify(
       data={}, 
-      message=f'Successfully deleted activity with id {scheduled_activity_to_delete.scheduler.id}',
+      message=f'Successfully deleted activity with id {scheduled_activity_to_delete.parent.id}',
       status=200
     ), 200
 	else:

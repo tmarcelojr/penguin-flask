@@ -4,7 +4,8 @@ from resources.penguins import penguins
 from resources.baby_penguins import baby_penguins
 from resources.activities import activities
 from resources.scheduled_activities import scheduled_activities
-from models import Penguin, DoesNotExist, initialize, DATABASE, Activity, Scheduled_Activity
+from resources.participation import participation
+from models import Penguin, DoesNotExist, initialize, DATABASE, Activity, Scheduled_Activity, Participation
 DEBUG = True
 PORT = 8000
 app = Flask(__name__)
@@ -38,6 +39,9 @@ app.register_blueprint(activities, url_prefix='/api/v1/activities')
 
 # Scheduled Activities
 app.register_blueprint(scheduled_activities, url_prefix='/api/v1/scheduled_activities')
+
+# Participation
+app.register_blueprint(participation, url_prefix='/api/v1/participation')
 
 # ==============================
 # 			DATABASE CONNECTION
