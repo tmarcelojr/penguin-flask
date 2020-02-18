@@ -23,3 +23,22 @@ def activities_index():
 			message=f'Successfully retrieved {len(activities_dicts)} activities.',
 			status=200
 		), 200
+
+# Create activity
+@activities.route('/', methods=['POST'])
+@login_required
+def create_activity():
+	payload = request.get_json()
+	activity = Activity.create(
+			name=payload['name'],
+			description=payload['description'],
+			creator=current_user.id
+		)
+	activity_dict = model_to_dict(activity)
+	activity_dict['creator'].pop('password')
+
+	return jsonify(
+			data=activity_dict,
+			message=f"Successfully created activity {payload['name']}.",
+			status=201
+		), 201
