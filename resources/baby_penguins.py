@@ -54,7 +54,7 @@ def delete_baby_penguin(id):
 		baby_penguin_to_delete.delete_instance()
 		return jsonify(
       data={}, 
-      message=f"Successfully deleted baby penguin with id {baby_penguin_to_delete.parent.id}",
+      message=f'Successfully deleted baby penguin with id {baby_penguin_to_delete.parent.id}',
       status=200
     ), 200
 	else:

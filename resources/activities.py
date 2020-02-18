@@ -42,3 +42,26 @@ def create_activity():
 			message=f"Successfully created activity {payload['name']}.",
 			status=201
 		), 201
+
+# Delete activity
+@activities.route('/<id>', methods=['Delete'])
+@login_required
+def delete_activity(id):
+	activity_to_delete = Activity.get_by_id(id)
+	if current_user.id == activity_to_delete.creator.id:
+		activity_to_delete.delete_instance()
+		return jsonify(
+      data={}, 
+      message=f'Successfully deleted activity with id {activity_to_delete.creator.id}',
+      status=200
+    ), 200
+	else:
+		return jsonify(
+				data={'Error: Forbidden'},
+				message='Penguin can only delete their own activities.',
+				status=403
+			), 403
+
+
+
+
