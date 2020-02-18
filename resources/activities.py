@@ -62,6 +62,26 @@ def delete_activity(id):
 				status=403
 			), 403
 
-
+# Update activity
+@activities.route('/<id>', methods=['PUT'])
+@login_required
+def update_actvity(id):
+	payload = request.get_json()
+	activity = Activity.get_by_id(id)
+	if current_user.id == activity.creator.id:
+		activity.name = payload['name'] if 'name' in payload else None
+		activity.save()
+		activity_dict = model_to_dict(activity)
+		return jsonify(
+				data=activity_dict,
+				message=f'Successfully updated activity with id {activity.id}.',
+				status=200
+			), 200
+	else:
+		return jsonify(
+				data='Error: Forbidden',
+				message='Penguins can only update their own activity.',
+				status=403
+			), 403
 
 
