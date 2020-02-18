@@ -3,8 +3,11 @@ from flask_login import UserMixin
 # * imports everything from peewee
 from peewee import *
 
+import datetime
+
 DATABASE = SqliteDatabase('baby_penguins.sqlite')
 DATABASE = SqliteDatabase('activities.sqlite')
+DATABASE = SqliteDatabase('scheduled_activities.sqlite')
 
 # ==============================
 # 						MODELS
@@ -37,7 +40,9 @@ class Activity(Model):
 
 # Scheduled Activity
 class Scheduled_Activity(Model):
-	creator = ForeignKeyField(Penguin, backref='scheduled_activities')
+	test = CharField()
+	created_at = DateTimeField(default=datetime.datetime.now)
+	scheduler = ForeignKeyField(Penguin, backref='scheduled_activities')
 
 	class Meta:
 		database = DATABASE

@@ -1,4 +1,4 @@
-from models import Activity
+from models import Scheduled_Activity
 from flask import Blueprint, request, jsonify
 from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
@@ -17,7 +17,7 @@ scheduled_activities = Blueprint('scheduled_activities', 'scheduled_activities')
 @scheduled_activities.route('/', methods=['GET'])
 @login_required
 def scheduled_activities_index():
-	scheduled_activities_dicts = [model_to_dict(scheduled_activities) for scheduled_activity in current_user.scheduled_activities]
+	scheduled_activities_dicts = [model_to_dict(scheduled_activity) for scheduled_activity in current_user.scheduled_activities]
 	return jsonify(
 			data=scheduled_activities_dicts,
 			message=f'Successfully retrieved {len(scheduled_activities_dicts)} scheduled activities.',
@@ -29,10 +29,11 @@ def scheduled_activities_index():
 @login_required
 def create_scheduled_activity():
 	payload = request.get_json()
-	activity = Activity.create(
+	scheduled_activity = Scheduled_Activity.create(
+			test=payload['test'],
 			scheduler=current_user.id
 		)
-	scheduled_activity_dict = model_to_dict(activity)
+	scheduled_activity_dict = model_to_dict(scheduled_activity)
 	scheduled_activity_dict['scheduler'].pop('password')
 
 	return jsonify(
@@ -40,3 +41,22 @@ def create_scheduled_activity():
 			message=f"Successfully scheduled activity by {payload['scheduler']}.",
 			status=201
 		), 201
+
+# Delete scheduled activity
+@scheduled_activities.route('/<id>', methods=['Delete'])
+@login_required
+def delete_scheduled_activity(id):
+	scheduled_activity_to_delete = Scheduled_Activity.get_by_id(id)
+	if current_user.id == scheduled_activity_to_delete.scheduler.id:
+		scheduled_activity_to_delete.delete_instance()
+		return jsonify(
+      data={}, 
+      message=f'Successfully deleted activity with id {scheduled_activity_to_delete.scheduler.id}',
+      status=200
+    ), 200
+	else:
+		return jsonify(
+				data={'Error: Forbidden'},
+				message='Penguins can only delete their own activity.',
+				status=403
+			), 403

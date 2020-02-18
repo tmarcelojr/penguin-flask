@@ -4,7 +4,7 @@ from resources.penguins import penguins
 from resources.baby_penguins import baby_penguins
 from resources.activities import activities
 from resources.scheduled_activities import scheduled_activities
-from models import Penguin, DoesNotExist, initialize, DATABASE, Activity
+from models import Penguin, DoesNotExist, initialize, DATABASE, Activity, Scheduled_Activity
 DEBUG = True
 PORT = 8000
 app = Flask(__name__)
