@@ -2,7 +2,8 @@ from flask import Flask, jsonify, g
 from flask_login import LoginManager
 from resources.penguins import penguins
 from resources.baby_penguins import baby_penguins
-from models import Penguin, DoesNotExist, initialize, DATABASE
+from resources.activities import activities
+from models import Penguin, DoesNotExist, initialize, DATABASE, Activity
 DEBUG = True
 PORT = 8000
 app = Flask(__name__)
@@ -30,6 +31,9 @@ app.register_blueprint(penguins, url_prefix='/api/v1/penguins')
 
 # Baby penguins
 app.register_blueprint(baby_penguins, url_prefix='/api/v1/baby_penguins')
+
+# Activities
+app.register_blueprint(activities, url_prefix='/api/v1/activities')
 
 # ==============================
 # 			DATABASE CONNECTION

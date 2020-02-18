@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from peewee import *
 
 DATABASE = SqliteDatabase('baby_penguins.sqlite')
+DATABASE = SqliteDatabase('activities.sqlite')
 
 # ==============================
 # 						MODELS
@@ -29,6 +30,7 @@ class Baby_Penguin(Model):
 class Activity(Model):
 	name = CharField()
 	description = CharField()
+	creator = ForeignKeyField(Penguin, backref='activities')
 
 	class Meta:
 		database = DATABASE
