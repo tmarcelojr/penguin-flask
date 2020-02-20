@@ -42,7 +42,6 @@ CORS(penguins, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(baby_penguins, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(activities, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(scheduled_activities, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(participation, origins=['http://localhost:3000'], supports_credentials=True)
 
 # ==============================
 # 			REGISTER BLUEPRINTS

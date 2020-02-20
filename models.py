@@ -39,7 +39,6 @@ else:
 DATABASE = SqliteDatabase('baby_penguins.sqlite')
 DATABASE = SqliteDatabase('activities.sqlite')
 DATABASE = SqliteDatabase('scheduled_activities.sqlite')
-DATABASE = SqliteDatabase('participation.sqlite')
 
 # ==============================
 # 						MODELS
@@ -87,7 +86,7 @@ class Scheduled_Activity(Model):
 
 def initialize():
   DATABASE.connect()
-  DATABASE.create_tables([Penguin, Baby_Penguin, Activity, Scheduled_Activity, Participation], safe=True)
+  DATABASE.create_tables([Penguin, Baby_Penguin, Activity, Scheduled_Activity], safe=True)
   print("Connected to DB and created tables if they weren't already there")
   DATABASE.close()
 
