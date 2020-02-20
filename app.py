@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, g
 from flask_cors import CORS
 from flask_login import LoginManager
@@ -90,6 +91,14 @@ def index():
 # ==============================
 # 			CONNECTION TO SERVER
 # ==============================
+
+# For using gunicorn
+if 'ON_HEROKU' in os.environ: 
+  print('\non heroku!')
+  models.initialize()
+
 if __name__ == '__main__':
 	initialize()
 	app.run(debug=DEBUG, port=PORT) 
+
+	
