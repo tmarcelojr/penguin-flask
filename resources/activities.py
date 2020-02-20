@@ -70,6 +70,7 @@ def update_actvity(id):
 	activity = Activity.get_by_id(id)
 	if current_user.id == activity.creator.id:
 		activity.name = payload['name'] if 'name' in payload else None
+		activity.description = payload['description'] if 'description' in payload else None
 		activity.save()
 		activity_dict = model_to_dict(activity)
 		return jsonify(

@@ -49,13 +49,7 @@ class Scheduled_Activity(Model):
 	# created_at = DateTimeField(default=datetime.datetime.now)
 	activity = ForeignKeyField(Activity, backref='scheduled_activities')
 	parent = ForeignKeyField(Penguin, backref='scheduled_activities')
-
-	class Meta:
-		database = DATABASE
-
-# Participation
-class Participation(Model):
-	participant = ForeignKeyField(Baby_Penguin, backref='participation')
+	participant = ForeignKeyField(Baby_Penguin, backref='scheduled_activities')
 
 	class Meta:
 		database = DATABASE

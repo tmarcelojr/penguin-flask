@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, g
+from flask_cors import CORS
 from flask_login import LoginManager
 from resources.penguins import penguins
 from resources.baby_penguins import baby_penguins
@@ -23,6 +24,25 @@ def load_user(userid):
     return Penguin.get(Penguin.id == userid)
   except DoesNotExist:
     return None
+
+@login_manager.unauthorized_handler
+def unauthorized():
+  return jsonify(
+    data={"error": "User not logged in"},
+    message="User must be logged in to access that resource",
+    status=401
+  ), 401
+
+# ==============================
+# 						CORS
+# ==============================
+
+# Setup sharing for each blueprint
+CORS(penguins, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(baby_penguins, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(activities, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(scheduled_activities, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(participation, origins=['http://localhost:3000'], supports_credentials=True)
 
 # ==============================
 # 			REGISTER BLUEPRINTS

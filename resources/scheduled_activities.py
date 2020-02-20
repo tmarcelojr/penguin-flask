@@ -26,13 +26,14 @@ def scheduled_activities_index():
 
 # Schedule activity
 # specify which activity I'm setting in the params
-@scheduled_activities.route('/<activity_id>', methods=['POST'])
+@scheduled_activities.route('/<activity_id>/<baby_penguin_id>', methods=['POST'])
 @login_required
-def create_scheduled_activity(activity_id):
+def create_scheduled_activity(activity_id, baby_penguin_id):
 	payload = request.get_json() # activity ID could be here
 	scheduled_activity = Scheduled_Activity.create(
 			activity=activity_id,
-			parent=current_user.id
+			parent=current_user.id,
+			participant=baby_penguin_id
 		)
 	scheduled_activity_dict = model_to_dict(scheduled_activity)
 	scheduled_activity_dict['parent'].pop('password')
